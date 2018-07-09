@@ -597,7 +597,7 @@ public class GoogleDrive extends CordovaPlugin implements GoogleApiClient.Connec
         if (requestCode == REQUEST_CODE_RESOLUTION && resultCode == RESULT_OK) {
             mGoogleApiClient.connect();
         } else {
-            mCallbackContext.sendPluginResult(new PluginResult(PluginResult.Status.ERROR,"user cancelled authorization"));
+            mCallbackContext.sendPluginResult(new PluginResult(PluginResult.Status.ERROR,"user cancelled authorization " + requestCode + " " + resultCode));
         }
     }
 
