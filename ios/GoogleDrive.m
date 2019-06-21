@@ -353,6 +353,7 @@ static NSString *kAuthorizerKey = @"";
 
 - (void)loadState {
     GTMAppAuthFetcherAuthorization* authorization = [GTMAppAuthFetcherAuthorization authorizationFromKeychainForName:kAuthorizerKey];
+    self.driveService.authorizer = authorization;
     [self setGtmAuthorization:authorization];
 }
 
