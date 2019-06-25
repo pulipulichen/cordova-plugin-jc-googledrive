@@ -1,5 +1,5 @@
 package gr.jcdenton;
-
+import java.io.FileNotFoundException;
 import android.Manifest;
 import android.content.ContentResolver;
 import android.content.Intent;
@@ -265,25 +265,53 @@ public class GoogleDrive extends CordovaPlugin implements GoogleApiClient.Connec
                         new Thread() {
                             @Override
                             public void run() {
-                                try {
+//                                try {
+
+                                    // DriveContents object contains pointers
+                                    // to the actual byte stream
+//                                    DriveContents contents = result.getDriveContents();
                                     InputStream inputStream = driveContents.getInputStream();
-                                    OutputStream outputStream = new FileOutputStream(destPath);//driveContents.getOutputStream();
-                                    if (inputStream != null) {
-                                        byte[] data = new byte[1024];
-                                        while (inputStream.read(data) != -1) {
-                                            outputStream.write(data);
+                                    OutputStream out = null;
+                                    try {
+                                        out = new FileOutputStream(destPath);
+                                        byte[] buffer = new byte[1024];
+                                        int read;
+                                        while ((read = inputStream.read(buffer)) != -1) {
+                                            out.write(buffer, 0, read);
                                         }
+
+                                        out.flush();
                                         inputStream.close();
+                                        out.close();
+
+                                    } catch (FileNotFoundException e) {
+                                        e.printStackTrace();
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
                                     }
-                                    outputStream.close();
+
+
+
+//                                    InputStream inputStream = driveContents.getInputStream();
+//                                    OutputStream outputStream = new FileOutputStream(destPath);//driveContents.getOutputStream();
+//                                    if (inputStream != null) {
+//                                        byte[] data = new byte[1024];
+//                                        while (inputStream.read(data) != -1) {
+//                                            outputStream.write(data);
+//                                        }
+//                                        inputStream.close();
+//                                    }
+//                                    outputStream.close();
+
+
                                     try {
                                         mCallbackContext.sendPluginResult(new PluginResult(PluginResult.Status.OK, new JSONObject().put("resourceId",file.getDriveId())));
                                     } catch (JSONException ex) {
                                         Log.i(TAG, ex.getMessage());
                                     }
-                                } catch (IOException e) {
-                                    Log.e(TAG, e.getMessage());
-                                }
+//                                } catch (IOException e) {
+//                                    Log.e(TAG, e.getMessage());
+//                                }
                             }
                         }.start();
                     }
@@ -388,15 +416,15 @@ public class GoogleDrive extends CordovaPlugin implements GoogleApiClient.Connec
         /* Allowed MIME types: https://developers.google.com/drive/v3/web/mime-types */
         Query.Builder qb = new Query.Builder();
         qb.addFilter(Filters.and(
-          Filters.and(Filters.eq(SearchableField.TRASHED, false)),
-          Filters.or(
-            Filters.eq(SearchableField.MIME_TYPE, "application/vnd.google-apps.folder"),
-            Filters.eq(SearchableField.MIME_TYPE, "application/vnd.google-apps.photo"),
-            Filters.eq(SearchableField.MIME_TYPE, "application/vnd.google-apps.video"),
-            Filters.eq(SearchableField.MIME_TYPE, "application/vnd.google-apps.audio"),
-            Filters.eq(SearchableField.MIME_TYPE, "application/vnd.google-apps.file"),
-            Filters.eq(SearchableField.MIME_TYPE, "application/vnd.google-apps.unknown")
-            )
+          Filters.and(Filters.eq(SearchableField.TRASHED, false))
+//          Filters.or(
+//            Filters.eq(SearchableField.MIME_TYPE, "application/vnd.google-apps.folder"),
+//            Filters.eq(SearchableField.MIME_TYPE, "application/vnd.google-apps.photo"),
+//            Filters.eq(SearchableField.MIME_TYPE, "application/vnd.google-apps.video"),
+//            Filters.eq(SearchableField.MIME_TYPE, "application/vnd.google-apps.audio"),
+//            Filters.eq(SearchableField.MIME_TYPE, "application/vnd.google-apps.file"),
+//            Filters.eq(SearchableField.MIME_TYPE, "application/vnd.google-apps.unknown")
+//            )
           )
         );
 
