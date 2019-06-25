@@ -387,7 +387,6 @@ public class GoogleDrive extends CordovaPlugin implements GoogleApiClient.Connec
 
                                 String fname = fPathURI.getLastPathSegment();
                                 MetadataChangeSet metadataChangeSet = new MetadataChangeSet.Builder()
-                                        .setMimeType(mimeType)
                                         .setTitle(fname)
                                         .build();
 
