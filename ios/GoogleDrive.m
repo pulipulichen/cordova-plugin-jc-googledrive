@@ -28,6 +28,13 @@ static NSString *kAuthorizerKey = @"";
     //NSLog(@"%@",kClientID);
 }
 
+- (void)getUser:(CDVInvokedUrlCommand*)command
+{
+    [self.commandDelegate sendPluginResult:[CDVPluginResult
+                                            resultWithStatus:CDVCommandStatus_ERROR
+                                            messageAsString:self.authorization.userEmail]
+                                callbackId:command.callbackId];
+}
 
 - (void)downloadFile:(CDVInvokedUrlCommand*)command
 {
