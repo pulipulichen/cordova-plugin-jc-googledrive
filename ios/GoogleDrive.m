@@ -28,6 +28,13 @@ static NSString *kAuthorizerKey = @"";
     //NSLog(@"%@",kClientID);
 }
 
+- (void)getUser:(CDVInvokedUrlCommand*)command
+{
+    [self.commandDelegate sendPluginResult:[CDVPluginResult
+                                            resultWithStatus:CDVCommandStatus_ERROR
+                                            messageAsString:self.authorization.userEmail]
+                                callbackId:command.callbackId];
+}
 
 - (void)downloadFile:(CDVInvokedUrlCommand*)command
 {
@@ -353,6 +360,7 @@ static NSString *kAuthorizerKey = @"";
 
 - (void)loadState {
     GTMAppAuthFetcherAuthorization* authorization = [GTMAppAuthFetcherAuthorization authorizationFromKeychainForName:kAuthorizerKey];
+    self.driveService.authorizer = authorization;
     [self setGtmAuthorization:authorization];
 }
 

@@ -14,5 +14,6 @@
 - (void)uploadFile:(CDVInvokedUrlCommand*)command;
 - (void)fileList:(CDVInvokedUrlCommand*)command;
 - (void)deleteFile:(CDVInvokedUrlCommand*)command;
+- (void)getUser:(CDVInvokedUrlCommand*)command;
 
 @end
